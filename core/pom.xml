@@ -70,6 +70,10 @@
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-csv</artifactId>
+        </dependency>
         <!-- for using CGIAR: elevation data importing via tif files-->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
