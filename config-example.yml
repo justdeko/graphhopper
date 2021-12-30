@@ -50,6 +50,10 @@ graphhopper:
     - name: car
       vehicle: car
       weighting: fastest
+    - name: simra_bike
+      vehicle: bike
+      weighting: shortest
+
 
   #  - name: car_with_turn_costs
   #    vehicle: car
