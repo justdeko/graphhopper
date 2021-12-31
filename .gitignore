@@ -2,6 +2,7 @@ target/
 *~
 *-gh/
 *.osm
+*.csv
 nbactions*.xml
 /config.yml
 build.xml

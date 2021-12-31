@@ -12,18 +12,21 @@ import com.graphhopper.storage.IntsRef;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 /**
  * SimRa safety score parser for safety score values
  */
 public class SafetyScoreParser implements TagParser {
     private final IntEncodedValue safetyScoreEnc;
+    private final File safetyScoresFile;
 
     public SafetyScoreParser() {
+        // initialize encoded value, file and csv schema
+        String filepath = "/Users/dk/uniprojects/graphhopper/way_score_mapping.csv"; //TODO(DK): not hardcoded
         this.safetyScoreEnc = SafetyScore.create();
+        this.safetyScoresFile = new File(filepath);
     }
 
     @Override
@@ -32,42 +35,36 @@ public class SafetyScoreParser implements TagParser {
     }
 
     /**
-     * Reads the SimRa safety scores file and returns a list of osm way id-score pairs
+     * Reads the SimRa safety scores file and returns a list of osm way id-score pairs (in form of SafetyScore objects)
      *
-     * @param file the safety scores file
-     * @return a List of osm way id-score key-value maps
+     * @return a List of Safety Score objects
      * @throws IOException if the file was not readable
      */
-    public static List<Map<Long, Long>> readScoresFile(File file) throws IOException {
-        List<Map<Long, Long>> scoresList = new LinkedList<>();
-        MappingIterator<Map<Long, Long>> iterator = new CsvMapper().readerFor(Map.class)
+    public List<SafetyScoreEntry> readScoresFile() throws IOException {
+        MappingIterator<SafetyScoreEntry> iterator = new CsvMapper()
+                .readerFor(SafetyScoreEntry.class)
                 .with(CsvSchema.emptySchema().withHeader())
-                .readValues(file);
-        while (iterator.hasNext()) {
-            scoresList.add(iterator.next());
-        }
-        return scoresList;
+                .readValues(safetyScoresFile);
+        return iterator.readAll();
     }
 
     @Override
     public IntsRef handleWayTags(IntsRef edgeFlags, ReaderWay way, IntsRef relationFlags) {
-        String filepath = "../sample_data/scores.csv";
-        File scoresFile = new File(filepath);
         try {
-            // iterate over scores list
-            List<Map<Long, Long>> scoresList = readScoresFile(scoresFile);
-            for (Map<Long, Long> scorePair : scoresList) {
-                Long id = way.getId();
-                Long score = scorePair.get(id);
-                // if score is found, set encoded value
-                if (score != null) {
-                    safetyScoreEnc.setInt(false, edgeFlags, Math.toIntExact(score * 100));
-                    return null;
-                }
-            }
+            // filter scores list and find any entry that matches way id
+            List<SafetyScoreEntry> scoresList = readScoresFile(); // TODO(DK): move this to constructor for performance
+            Optional<SafetyScoreEntry> foundEntry = scoresList
+                    .stream()
+                    .parallel()
+                    .filter(safetyScore -> safetyScore.id == way.getId())
+                    .findAny();
+            foundEntry.ifPresent(entry -> {
+                System.out.printf("Safety score entry found with OSM ID: %d", entry.id);
+                safetyScoreEnc.setInt(false, edgeFlags, (int) (entry.safetyScore * 100));
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return edgeFlags;
     }
 }
