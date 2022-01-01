@@ -83,6 +83,10 @@ public class OSMReader {
     private GHLongHashSet osmWayIdSet = new GHLongHashSet();
     private IntLongMap edgeIdToOsmWayIdMap;
 
+    // instantiate SimRa import utils
+    String filepath = "/Users/dk/uniprojects/graphhopper/way_score_mapping.csv"; //TODO(DK): not hardcoded
+    SimRaImportUtil importUtil = new SimRaImportUtil(filepath);
+
     public OSMReader(GraphHopperStorage ghStorage, OSMReaderConfig config) {
         this.ghStorage = ghStorage;
         this.config = config;
@@ -220,7 +224,7 @@ public class OSMReader {
         way.removeTag("country");
         way.removeTag("country_rule");
         way.removeTag("custom_areas");
-        
+
         List<CustomArea> customAreas;
         if (areaIndex != null) {
             double middleLat;
@@ -257,6 +261,10 @@ public class OSMReader {
 
         // also add all custom areas as artificial tag
         way.setTag("custom_areas", customAreas);
+
+        // this section adds SimRa safety scores to corresponding OSM ways
+        double safetyScore = importUtil.findSafetyScore(way.getId());
+        way.setTag("safety_score", safetyScore);
     }
 
     /**
