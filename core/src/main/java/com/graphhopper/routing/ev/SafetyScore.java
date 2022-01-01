@@ -2,6 +2,7 @@ package com.graphhopper.routing.ev;
 
 /**
  * The SafetyScore stores the SimRa safety score values for bicycles.
+ * A higher score means the path/node is LESS safe.
  */
 public class SafetyScore {
     public static final String KEY = "safety_score";
