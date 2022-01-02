@@ -10,14 +10,21 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 public class SimRaImportUtil {
     private final File safetyScoresFile;
     private static final Logger LOGGER = LoggerFactory.getLogger(SimRaImportUtil.class);
+    private List<SafetyScoreEntry> scoreEntryList;
 
     public SimRaImportUtil(String filePath) {
         this.safetyScoresFile = new File(filePath);
+        try {
+            this.scoreEntryList = readScoresFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -41,20 +48,28 @@ public class SimRaImportUtil {
      * @return SimRa safety score
      */
     public double findSafetyScore(long osmWayId) {
-        try {
-            List<SafetyScoreEntry> scoreEntries = readScoresFile(); // TODO(DK): optimize performance
-            Optional<SafetyScoreEntry> foundEntry = scoreEntries
-                    .stream()
-                    .parallel()
-                    .filter(safetyScore -> safetyScore.id == osmWayId)
+        if (scoreEntryList != null) {
+            OptionalInt entryIndex = IntStream.range(0, scoreEntryList.size())
+                    .filter(i -> osmWayId == scoreEntryList.get(i).id)
                     .findAny();
-            if (foundEntry.isPresent()) {
-                LOGGER.info("Found score for way with ID " + osmWayId);
-                return foundEntry.get().safetyScore;
+            if (entryIndex.isPresent()) {
+                int i = entryIndex.getAsInt();
+                LOGGER.debug("Found score for way with ID " + osmWayId);
+                SafetyScoreEntry foundEntry = scoreEntryList.get(i);
+                scoreEntryList.remove(i);
+                return foundEntry.safetyScore;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return 0.0;
+    }
+
+    /**
+     * Fetches the number of (remaining) elements in the score entry list.
+     * Useful to see how many elements were not found
+     *
+     * @return size of the list
+     */
+    public int getEntryListSize() {
+        return this.scoreEntryList.size();
     }
 }

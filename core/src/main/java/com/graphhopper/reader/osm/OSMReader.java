@@ -265,6 +265,7 @@ public class OSMReader {
         // this section adds SimRa safety scores to corresponding OSM ways
         double safetyScore = importUtil.findSafetyScore(way.getId());
         way.setTag("safety_score", safetyScore);
+        LOGGER.info("Remaining safety entries not matched: " + importUtil.getEntryListSize());
     }
 
     /**
