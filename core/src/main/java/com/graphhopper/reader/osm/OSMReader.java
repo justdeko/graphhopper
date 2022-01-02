@@ -161,6 +161,7 @@ public class OSMReader {
             throw new RuntimeException("Graph after reading OSM must not be empty");
         LOGGER.info("Finished reading OSM file: {}, nodes: {}, edges: {}, zero distance edges: {}",
                 osmFile.getAbsolutePath(), nf(ghStorage.getNodes()), nf(ghStorage.getEdges()), nf(zeroCounter));
+        LOGGER.info("Remaining safety entries not matched: " + importUtil.getEntryListSize());
         finishedReading();
     }
 
@@ -265,7 +266,6 @@ public class OSMReader {
         // this section adds SimRa safety scores to corresponding OSM ways
         double safetyScore = importUtil.findSafetyScore(way.getId());
         way.setTag("safety_score", safetyScore);
-        LOGGER.info("Remaining safety entries not matched: " + importUtil.getEntryListSize());
     }
 
     /**
