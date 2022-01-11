@@ -49,6 +49,10 @@ graphhopper:
   profiles:
     - name: simra_bike
       vehicle: bike
+      weighting: custom
+      custom_model_file: empty
+    - name: normal_bike
+      vehicle: bike
       weighting: shortest
 
 
