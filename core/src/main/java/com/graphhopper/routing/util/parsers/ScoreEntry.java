@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({"way_id", "score"})
-public class SafetyScoreEntry {
+public class ScoreEntry {
     @JsonProperty("way_id")
     public long id;
     @JsonProperty("score")

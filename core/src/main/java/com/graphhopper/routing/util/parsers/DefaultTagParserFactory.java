@@ -77,6 +77,8 @@ public class DefaultTagParserFactory implements TagParserFactory {
             return new CountryParser();
         else if (name.equals(SafetyScore.KEY))
             return new SafetyScoreParser();
+        else if (name.equals(SurfaceQuality.KEY))
+            return new SurfaceQualityParser();
 
         throw new IllegalArgumentException("DefaultTagParserFactory cannot find: " + name);
     }

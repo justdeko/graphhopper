@@ -1,6 +1,6 @@
 package com.graphhopper.reader.osm;
 
-import com.graphhopper.routing.util.parsers.SafetyScoreEntry;
+import com.graphhopper.routing.util.parsers.ScoreEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ class SimRaImportUtilTest {
 
     @Test
     void readScoresFile() {
-        List<SafetyScoreEntry> scoreEntries = null;
+        List<ScoreEntry> scoreEntries = null;
         try {
             scoreEntries = importUtil.readScoresFile();
             System.out.println(scoreEntries.get(0).safetyScore);

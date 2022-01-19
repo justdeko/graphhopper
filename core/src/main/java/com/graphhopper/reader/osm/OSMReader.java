@@ -27,6 +27,8 @@ import com.graphhopper.reader.dem.ElevationProvider;
 import com.graphhopper.reader.dem.GraphElevationSmoothing;
 import com.graphhopper.routing.OSMReaderConfig;
 import com.graphhopper.routing.ev.Country;
+import com.graphhopper.routing.ev.SafetyScore;
+import com.graphhopper.routing.ev.SurfaceQuality;
 import com.graphhopper.routing.util.AreaIndex;
 import com.graphhopper.routing.util.CustomArea;
 import com.graphhopper.routing.util.EncodingManager;
@@ -84,8 +86,10 @@ public class OSMReader {
     private IntLongMap edgeIdToOsmWayIdMap;
 
     // instantiate SimRa import utils
-    String filepath = "/Users/dk/uniprojects/graphhopper/way_score_mapping.csv"; //TODO(DK): not hardcoded
-    SimRaImportUtil importUtil = new SimRaImportUtil(filepath);
+    String safetyScorePath = "/Users/dk/uniprojects/graphhopper/way_score_mapping.csv"; //TODO(DK): not hardcoded
+    String surfaceQualityPath = "Users/dk/uniprojects/graphhopper/way_quality_mapping.csv"; //TODO(DK): not hardcoded
+    SimRaImportUtil safetyScoreImportUtil = new SimRaImportUtil(safetyScorePath);
+    SimRaImportUtil surfaceQualityScoreImportUtil = new SimRaImportUtil(surfaceQualityPath);
 
     public OSMReader(GraphHopperStorage ghStorage, OSMReaderConfig config) {
         this.ghStorage = ghStorage;
@@ -161,7 +165,8 @@ public class OSMReader {
             throw new RuntimeException("Graph after reading OSM must not be empty");
         LOGGER.info("Finished reading OSM file: {}, nodes: {}, edges: {}, zero distance edges: {}",
                 osmFile.getAbsolutePath(), nf(ghStorage.getNodes()), nf(ghStorage.getEdges()), nf(zeroCounter));
-        LOGGER.info("Remaining safety entries not matched: " + importUtil.getEntryListSize());
+        LOGGER.info("Remaining safety entries not matched: " + safetyScoreImportUtil.getEntryListSize());
+        LOGGER.info("Remaining surface quality entries not matched: " + surfaceQualityScoreImportUtil.getEntryListSize());
         finishedReading();
     }
 
@@ -264,8 +269,11 @@ public class OSMReader {
         way.setTag("custom_areas", customAreas);
 
         // this section adds SimRa safety scores to corresponding OSM ways
-        double safetyScore = importUtil.findSafetyScore(way.getId());
-        way.setTag("safety_score", safetyScore);
+        double safetyScore = safetyScoreImportUtil.findSafetyScore(way.getId());
+        way.setTag(SafetyScore.KEY, safetyScore);
+        // this section adds SimRa surface quality scores to corresponding OSM ways
+        double surfaceQualityScore = surfaceQualityScoreImportUtil.findSafetyScore(way.getId());
+        way.setTag(SurfaceQuality.KEY, surfaceQualityScore);
     }
 
     /**

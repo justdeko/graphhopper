@@ -3,7 +3,7 @@ package com.graphhopper.reader.osm;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.graphhopper.routing.util.parsers.SafetyScoreEntry;
+import com.graphhopper.routing.util.parsers.ScoreEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +14,12 @@ import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 public class SimRaImportUtil {
-    private final File safetyScoresFile;
+    private final File scoresFile;
     private static final Logger LOGGER = LoggerFactory.getLogger(SimRaImportUtil.class);
-    private List<SafetyScoreEntry> scoreEntryList;
+    private List<ScoreEntry> scoreEntryList;
 
     public SimRaImportUtil(String filePath) {
-        this.safetyScoresFile = new File(filePath);
+        this.scoresFile = new File(filePath);
         try {
             this.scoreEntryList = readScoresFile();
         } catch (IOException e) {
@@ -33,16 +33,16 @@ public class SimRaImportUtil {
      * @return a List of Safety Score objects
      * @throws IOException if the file was not readable
      */
-    public List<SafetyScoreEntry> readScoresFile() throws IOException {
-        MappingIterator<SafetyScoreEntry> iterator = new CsvMapper()
-                .readerFor(SafetyScoreEntry.class)
+    public List<ScoreEntry> readScoresFile() throws IOException {
+        MappingIterator<ScoreEntry> iterator = new CsvMapper()
+                .readerFor(ScoreEntry.class)
                 .with(CsvSchema.emptySchema().withHeader())
-                .readValues(safetyScoresFile);
+                .readValues(scoresFile);
         return iterator.readAll();
     }
 
     /**
-     * Finds the corresponding safety score for a given OSM way ID
+     * Finds the corresponding safety/surface quality score for a given OSM way ID
      *
      * @param osmWayId the osm way id
      * @return SimRa safety score
@@ -55,7 +55,7 @@ public class SimRaImportUtil {
             if (entryIndex.isPresent()) {
                 int i = entryIndex.getAsInt();
                 LOGGER.debug("Found score for way with ID " + osmWayId);
-                SafetyScoreEntry foundEntry = scoreEntryList.get(i);
+                ScoreEntry foundEntry = scoreEntryList.get(i);
                 scoreEntryList.remove(i);
                 return foundEntry.safetyScore;
             }
