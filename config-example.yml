@@ -47,9 +47,14 @@ graphhopper:
   # To prevent long running routing queries you should usually enable either speed or hybrid mode for all the given
   # profiles (see below). Otherwise you should at least limit the number of `routing.max_visited_nodes`.
   profiles:
-    - name: car
-      vehicle: car
-      weighting: fastest
+    - name: simra_bike
+      vehicle: bike
+      weighting: custom
+      custom_model_file: empty
+    - name: normal_bike
+      vehicle: bike
+      weighting: shortest
+
 
   #  - name: car_with_turn_costs
   #    vehicle: car
@@ -65,7 +70,8 @@ graphhopper:
   # profiles with `turn_costs: true` a more elaborate preparation is required (longer preparation time and more memory
   # usage) and the routing will also be slower than with `turn_costs: false`.
   profiles_ch:
-    - profile: car
+    - profile: simra_bike
+    - profile: normal_bike
   #   - profile: car_with_turn_costs
 
   # Hybrid mode:
