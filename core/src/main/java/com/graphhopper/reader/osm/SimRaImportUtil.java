@@ -47,7 +47,7 @@ public class SimRaImportUtil {
      * @param osmWayId the osm way id
      * @return SimRa safety score
      */
-    public double findSafetyScore(long osmWayId) {
+    public double findScore(long osmWayId, double defaultValue) {
         if (scoreEntryList != null) {
             OptionalInt entryIndex = IntStream.range(0, scoreEntryList.size())
                     .filter(i -> osmWayId == scoreEntryList.get(i).id)
@@ -60,7 +60,7 @@ public class SimRaImportUtil {
                 return foundEntry.safetyScore;
             }
         }
-        return 0.0;
+        return defaultValue;
     }
 
     /**
@@ -70,6 +70,8 @@ public class SimRaImportUtil {
      * @return size of the list
      */
     public int getEntryListSize() {
-        return this.scoreEntryList.size();
+        if (scoreEntryList != null) {
+            return this.scoreEntryList.size();
+        } else return 0;
     }
 }

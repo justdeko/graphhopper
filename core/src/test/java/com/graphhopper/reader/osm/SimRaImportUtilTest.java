@@ -36,7 +36,7 @@ class SimRaImportUtilTest {
     void findSafetyScore() {
         // first osm ID in the .csv file
         long firstId = 4441941;
-        double safetyScore = importUtil.findSafetyScore(firstId);
+        double safetyScore = importUtil.findScore(firstId, 0.0);
         assertEquals(0.04950495049504951, safetyScore);
     }
 }

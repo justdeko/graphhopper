@@ -269,10 +269,10 @@ public class OSMReader {
         way.setTag("custom_areas", customAreas);
 
         // this section adds SimRa safety scores to corresponding OSM ways
-        double safetyScore = safetyScoreImportUtil.findSafetyScore(way.getId());
+        double safetyScore = safetyScoreImportUtil.findScore(way.getId(), 0.0);
         way.setTag(SafetyScore.KEY, safetyScore);
         // this section adds SimRa surface quality scores to corresponding OSM ways
-        double surfaceQualityScore = surfaceQualityScoreImportUtil.findSafetyScore(way.getId());
+        double surfaceQualityScore = surfaceQualityScoreImportUtil.findScore(way.getId(), 1.0);
         way.setTag(SurfaceQuality.KEY, surfaceQualityScore);
     }
 
