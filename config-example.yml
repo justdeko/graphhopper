@@ -5,6 +5,10 @@ graphhopper:
   # Local folder used by graphhopper to store its data
   graph.location: graph-cache
 
+  # Location of safety and surface quality score tables
+  weights.surface_quality: "Users/dk/uniprojects/graphhopper/way_quality_mapping.csv"
+  weights.safety_score: "/Users/dk/uniprojects/graphhopper/way_score_mapping.csv"
+
   ##### Vehicles #####
 
 

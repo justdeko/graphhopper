@@ -86,10 +86,8 @@ public class OSMReader {
     private IntLongMap edgeIdToOsmWayIdMap;
 
     // instantiate SimRa import utils
-    String safetyScorePath = "/Users/dk/uniprojects/graphhopper/way_score_mapping.csv"; //TODO(DK): not hardcoded
-    String surfaceQualityPath = "Users/dk/uniprojects/graphhopper/way_quality_mapping.csv"; //TODO(DK): not hardcoded
-    SimRaImportUtil safetyScoreImportUtil = new SimRaImportUtil(safetyScorePath);
-    SimRaImportUtil surfaceQualityScoreImportUtil = new SimRaImportUtil(surfaceQualityPath);
+    private final SimRaImportUtil safetyScoreImportUtil;
+    private final SimRaImportUtil surfaceQualityScoreImportUtil;
 
     public OSMReader(GraphHopperStorage ghStorage, OSMReaderConfig config) {
         this.ghStorage = ghStorage;
@@ -100,6 +98,10 @@ public class OSMReader {
         simplifyAlgo.setMaxDistance(config.getMaxWayPointDistance());
         simplifyAlgo.setElevationMaxDistance(config.getElevationMaxWayPointDistance());
         turnCostStorage = ghStorage.getTurnCostStorage();
+
+        // instantiate SimRa import utils
+        this.safetyScoreImportUtil = new SimRaImportUtil(config.getSafetyScoresPath());
+        this.surfaceQualityScoreImportUtil = new SimRaImportUtil(config.getSurfaceQualityPath());
 
         tempRelFlags = encodingManager.createRelationFlags();
         if (tempRelFlags.length != 2)

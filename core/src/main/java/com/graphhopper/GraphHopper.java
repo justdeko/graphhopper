@@ -496,6 +496,11 @@ public class GraphHopper {
         osmReaderConfig.setMaxWayPointDistance(ghConfig.getDouble(Routing.INIT_WAY_POINT_MAX_DISTANCE, osmReaderConfig.getMaxWayPointDistance()));
         osmReaderConfig.setWorkerThreads(ghConfig.getInt("datareader.worker_threads", osmReaderConfig.getWorkerThreads()));
 
+        // SimRa safety & surface quality
+        osmReaderConfig.setSafetyScoresPath(ghConfig.getString("weights.safety_score", osmReaderConfig.getSafetyScoresPath()));
+        osmReaderConfig.setSurfaceQualityPath(ghConfig.getString("weights.surface_quality", osmReaderConfig.getSurfaceQualityPath()));
+
+
         // index
         preciseIndexResolution = ghConfig.getInt("index.high_resolution", preciseIndexResolution);
         maxRegionSearch = ghConfig.getInt("index.max_region_search", maxRegionSearch);

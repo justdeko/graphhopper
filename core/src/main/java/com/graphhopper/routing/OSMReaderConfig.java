@@ -24,6 +24,8 @@ public class OSMReaderConfig {
     private boolean smoothElevation = false;
     private double longEdgeSamplingDistance = Double.MAX_VALUE;
     private int workerThreads = 2;
+    private String safetyScoresPath = "";
+    private String surfaceQualityPath = "";
 
     public double getMaxWayPointDistance() {
         return maxWayPointDistance;
@@ -84,5 +86,29 @@ public class OSMReaderConfig {
     public OSMReaderConfig setWorkerThreads(int workerThreads) {
         this.workerThreads = workerThreads;
         return this;
+    }
+
+    public String getSafetyScoresPath() {
+        return safetyScoresPath;
+    }
+
+    /**
+     * Sets the file path for the safety scores mapping table
+     * @param safetyScoresPath the file path
+     */
+    public void setSafetyScoresPath(String safetyScoresPath) {
+        this.safetyScoresPath = safetyScoresPath;
+    }
+
+    public String getSurfaceQualityPath() {
+        return surfaceQualityPath;
+    }
+
+    /**
+     * Sets the file path for the surface quality mapping table
+     * @param surfaceQualityPath the file path
+     */
+    public void setSurfaceQualityPath(String surfaceQualityPath) {
+        this.surfaceQualityPath = surfaceQualityPath;
     }
 }
