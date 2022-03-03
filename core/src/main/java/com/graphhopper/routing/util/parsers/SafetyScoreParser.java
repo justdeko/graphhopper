@@ -32,7 +32,7 @@ public class SafetyScoreParser implements TagParser {
     @Override
     public IntsRef handleWayTags(IntsRef edgeFlags, ReaderWay way, IntsRef relationFlags) {
         Double score = way.getTag(SafetyScore.KEY, 0.0);
-        LOGGER.debug("Setting safety score with value: " + score);
+        // LOGGER.debug("Setting safety score with value: " + score);
         safetyScoreEnc.setInt(false, edgeFlags, (int) (score * 100));
         return edgeFlags;
     }

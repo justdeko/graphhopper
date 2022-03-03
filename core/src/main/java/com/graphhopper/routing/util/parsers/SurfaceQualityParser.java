@@ -31,8 +31,8 @@ public class SurfaceQualityParser implements TagParser {
 
     @Override
     public IntsRef handleWayTags(IntsRef edgeFlags, ReaderWay way, IntsRef relationFlags) {
-        Double score = way.getTag(SurfaceQuality.KEY, 0.0);
-        LOGGER.debug("Setting surface quality score with value: " + score);
+        Double score = way.getTag(SurfaceQuality.KEY, 1.0);
+        // LOGGER.debug("Setting surface quality score with value: " + score);
         surfaceQualityEnc.setInt(false, edgeFlags, score.intValue());
         return edgeFlags;
     }

@@ -5,6 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +18,15 @@ class SimRaImportUtilTest {
 
     @BeforeEach
     void setUp() {
-        String filepath = "/Users/dk/uniprojects/graphhopper/way_score_mapping.csv"; //TODO(DK): not hardcoded
-        importUtil = new SimRaImportUtil(filepath);
+        Path tempFile;
+        try {
+            tempFile = Files.createTempFile("way_score_mapping-", ".csv");
+            List<String> content = Arrays.asList("way_id,score\n", "4441941,0.04950495049504951\n");
+            Files.write(tempFile, content, StandardOpenOption.APPEND);
+            importUtil = new SimRaImportUtil(tempFile.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -29,7 +40,7 @@ class SimRaImportUtilTest {
             e.printStackTrace();
         }
         assertNotNull(scoreEntries);
-        assertTrue(scoreEntries.size() > 100);
+        assertTrue(scoreEntries.size() > 1);
     }
 
     @Test

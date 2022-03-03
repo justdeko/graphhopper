@@ -23,7 +23,7 @@ public class SimRaImportUtil {
         try {
             this.scoreEntryList = readScoresFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn(e.getMessage());
         }
     }
 
