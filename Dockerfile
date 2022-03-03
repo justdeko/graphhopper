@@ -50,4 +50,6 @@ EXPOSE 8989
 
 HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:8989/health || exit 1
 
+RUN chmod +x graphhopper.sh
+
 ENTRYPOINT [ "./graphhopper.sh", "-c", "config-example.yml" ]

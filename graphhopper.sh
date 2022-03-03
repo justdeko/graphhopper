@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # MIT License
 #
 # Copyright (c) 2021 Israel Hiking Map
@@ -20,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-#!/bin/bash
 (set -o igncr) 2>/dev/null && set -o igncr; # this comment is required for handling Windows cr/lf
 # See StackOverflow answer http://stackoverflow.com/a/14607651
 
