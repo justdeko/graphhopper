@@ -1,0 +1,17 @@
+name: Build and publish simra-graphhopper docker image
+
+on:
+  create:
+    tags:
+      - v*
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build simra-graphhopper image and upload
+        env:
+          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: sh ./.github/build-and-upload.sh

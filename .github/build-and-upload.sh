@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # MIT License
 #
 # Copyright (c) 2021 Israel Hiking Map
@@ -20,34 +22,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-FROM maven:3.6.3-jdk-8 as build
+echo "Cloning SimRa-graphhopper"
+git clone https://github.com/justdeko/graphhopper
+cd graphhopper || exit
+echo "Downloading Dockerfile and graphhopper.sh"
+chmod +x ./graphhopper.sh
+echo "Building docker image"
+docker build . -t justdeko/simra-graphhopper:latest
+docker login --username "$DOCKERHUB_USER" --password "$DOCKERHUB_TOKEN"
+echo "Publishing docker image"
+docker push justdeko/simra-graphhopper:latest
 
-RUN apt-get install -y wget
+TAG=$(git for-each-ref --sort=committerdate refs/tags | tail -n 1 | cut -d "/" -f3)
+if docker manifest inspect justdeko/simra-graphhopper:"$TAG" >/dev/null; then
+    echo "No need to publish existing version: $TAG";
+else
+    mv Dockerfile ../Dockerfile
+    mv graphhopper.sh ../graphhopper.sh
+    git checkout tags/"$TAG"
+    mv ../Dockerfile Dockerfile
+    mv ../graphhopper.sh graphhopper.sh
+    echo "Building docker image for tag: $TAG"
+    docker build . -t justdeko/simra-graphhopper:"$TAG"
+    echo "Publishing docker image for tag: $TAG"
+    docker push justdeko/simra-graphhopper:"$TAG"
+fi
 
-WORKDIR /graphhopper
-
-COPY . .
-
-RUN mvn clean install
-
-FROM openjdk:11.0-jre
-
-ENV JAVA_OPTS "-Xmx1g -Xms1g"
-
-RUN mkdir -p /data
-
-WORKDIR /graphhopper
-
-COPY --from=build /graphhopper/web/target/graphhopper*.jar ./
-
-COPY ./config-example.yml ./
-
-COPY ./graphhopper.sh ./
-
-VOLUME [ "/data" ]
-
-EXPOSE 8989
-
-HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:8989/health || exit 1
-
-ENTRYPOINT [ "./graphhopper.sh", "-c", "config-example.yml" ]
