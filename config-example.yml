@@ -6,8 +6,8 @@ graphhopper:
   graph.location: graph-cache
 
   # Location of safety and surface quality score tables
-  weights.surface_quality: "way_quality_mapping.csv"
-  weights.safety_score: "way_score_mapping.csv"
+  weights.surface_quality: "data/way_quality_mapping.csv"
+  weights.safety_score: "data/way_score_mapping.csv"
 
   ##### Vehicles #####
 
