@@ -4,6 +4,7 @@ graphhopper:
   datareader.file: ""
   # Local folder used by graphhopper to store its data
   graph.location: graph-cache
+  graph.encoded_values: surface
 
   # Location of safety and surface quality score tables
   weights.surface_quality: "data/way_quality_mapping.csv"
