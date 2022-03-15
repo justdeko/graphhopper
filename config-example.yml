@@ -7,8 +7,8 @@ graphhopper:
   graph.encoded_values: surface
 
   # Location of safety and surface quality score tables
-  weights.surface_quality: "data/way_quality_mapping.csv"
-  weights.safety_score: "data/way_score_mapping.csv"
+  weights.surface_quality: "data/way_surface_quality_mapping.csv"
+  weights.safety_score: "data/way_safety_score_mapping.csv"
 
   ##### Vehicles #####
 
