@@ -79,6 +79,8 @@ public class DefaultTagParserFactory implements TagParserFactory {
             return new SafetyScoreParser();
         else if (name.equals(SurfaceQuality.KEY))
             return new SurfaceQualityParser();
+        else if (name.equals(Lit.KEY))
+            return new OSMLitParser();
 
         throw new IllegalArgumentException("DefaultTagParserFactory cannot find: " + name);
     }

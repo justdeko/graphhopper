@@ -319,6 +319,9 @@ public class EncodingManager implements EncodedValueLookup {
             if (!em.hasEncodedValue(SurfaceQuality.KEY)) {
                 _addEdgeTagParser(new SurfaceQualityParser(), false);
             }
+            if (!em.hasEncodedValue(Lit.KEY)) {
+                _addEdgeTagParser(new OSMLitParser(), false);
+            }
 
             if (dateRangeParser == null)
                 dateRangeParser = new DateRangeParser(DateRangeParser.createCalendar());
