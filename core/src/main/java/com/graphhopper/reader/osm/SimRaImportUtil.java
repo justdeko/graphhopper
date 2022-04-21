@@ -45,7 +45,7 @@ public class SimRaImportUtil {
      * Finds the corresponding safety/surface quality score for a given OSM way ID
      *
      * @param osmWayId the osm way id
-     * @return SimRa safety score
+     * @return SimRa score
      */
     public double findScore(long osmWayId, double defaultValue) {
         if (scoreEntryList != null) {
@@ -61,6 +61,26 @@ public class SimRaImportUtil {
             }
         }
         return defaultValue;
+    }
+
+    /**
+     * Similar to findScore, but does not query the value and just returns a true if a value was found.
+     * @param osmWayId the osm way id
+     * @return true if entry found, false if not
+     */
+    public boolean findBoolean(long osmWayId) {
+        if (scoreEntryList != null) {
+            OptionalInt entryIndex = IntStream.range(0, scoreEntryList.size())
+                    .filter(i -> osmWayId == scoreEntryList.get(i).id)
+                    .findAny();
+            if (entryIndex.isPresent()) {
+                int i = entryIndex.getAsInt();
+                LOGGER.debug("Found entry for way with ID " + osmWayId);
+                scoreEntryList.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

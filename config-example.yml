@@ -9,6 +9,7 @@ graphhopper:
   # Location of safety and surface quality score tables
   weights.surface_quality: "/data/way_surface_quality_mapping.csv"
   weights.safety_score: "/data/way_safety_score_mapping.csv"
+  weights.accidents: "/data/way_accident_mapping.csv"
 
   ##### Vehicles #####
 

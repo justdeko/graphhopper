@@ -26,6 +26,7 @@ public class OSMReaderConfig {
     private int workerThreads = 2;
     private String safetyScoresPath = "";
     private String surfaceQualityPath = "";
+    private String accidentPath = "";
 
     public double getMaxWayPointDistance() {
         return maxWayPointDistance;
@@ -110,5 +111,17 @@ public class OSMReaderConfig {
      */
     public void setSurfaceQualityPath(String surfaceQualityPath) {
         this.surfaceQualityPath = surfaceQualityPath;
+    }
+
+    /**
+     * Sets the file path for the accident data table
+     * @param accidentPath the file path
+     */
+    public void setAccidentPath(String accidentPath) {
+        this.accidentPath = accidentPath;
+    }
+
+    public String getAccidentPath() {
+        return accidentPath;
     }
 }

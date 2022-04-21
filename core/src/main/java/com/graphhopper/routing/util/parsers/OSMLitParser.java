@@ -24,7 +24,8 @@ public class OSMLitParser implements TagParser {
 
     @Override
     public IntsRef handleWayTags(IntsRef edgeFlags, ReaderWay way, IntsRef relationFlags) {
-        String lit = way.getTag("lit");
-        return null;
+        boolean lit = way.getTag("lit", false);
+        litEnc.setBool(false, edgeFlags, lit);
+        return edgeFlags;
     }
 }

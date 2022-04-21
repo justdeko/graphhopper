@@ -26,6 +26,7 @@ import com.graphhopper.reader.dem.EdgeSampling;
 import com.graphhopper.reader.dem.ElevationProvider;
 import com.graphhopper.reader.dem.GraphElevationSmoothing;
 import com.graphhopper.routing.OSMReaderConfig;
+import com.graphhopper.routing.ev.Accident;
 import com.graphhopper.routing.ev.Country;
 import com.graphhopper.routing.ev.SafetyScore;
 import com.graphhopper.routing.ev.SurfaceQuality;
@@ -88,6 +89,7 @@ public class OSMReader {
     // instantiate SimRa import utils
     private final SimRaImportUtil safetyScoreImportUtil;
     private final SimRaImportUtil surfaceQualityScoreImportUtil;
+    private final SimRaImportUtil accidentImportUtil;
 
     public OSMReader(GraphHopperStorage ghStorage, OSMReaderConfig config) {
         this.ghStorage = ghStorage;
@@ -102,6 +104,7 @@ public class OSMReader {
         // instantiate SimRa import utils
         this.safetyScoreImportUtil = new SimRaImportUtil(config.getSafetyScoresPath());
         this.surfaceQualityScoreImportUtil = new SimRaImportUtil(config.getSurfaceQualityPath());
+        this.accidentImportUtil = new SimRaImportUtil(config.getAccidentPath());
 
         tempRelFlags = encodingManager.createRelationFlags();
         if (tempRelFlags.length != 2)
@@ -169,6 +172,7 @@ public class OSMReader {
                 osmFile.getAbsolutePath(), nf(ghStorage.getNodes()), nf(ghStorage.getEdges()), nf(zeroCounter));
         LOGGER.info("Remaining safety entries not matched: " + safetyScoreImportUtil.getEntryListSize());
         LOGGER.info("Remaining surface quality entries not matched: " + surfaceQualityScoreImportUtil.getEntryListSize());
+        LOGGER.info("Remaining accident entries not matched: "+ accidentImportUtil.getEntryListSize());
         finishedReading();
     }
 
@@ -276,6 +280,9 @@ public class OSMReader {
         // this section adds SimRa surface quality scores to corresponding OSM ways
         double surfaceQualityScore = surfaceQualityScoreImportUtil.findScore(way.getId(), 1.0);
         way.setTag(SurfaceQuality.KEY, surfaceQualityScore);
+
+        boolean accidentHappened = accidentImportUtil.findBoolean(way.getId());
+        way.setTag(Accident.KEY, accidentHappened);
     }
 
     /**

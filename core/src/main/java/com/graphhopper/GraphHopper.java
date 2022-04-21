@@ -499,7 +499,7 @@ public class GraphHopper {
         // SimRa safety & surface quality
         osmReaderConfig.setSafetyScoresPath(ghConfig.getString("weights.safety_score", osmReaderConfig.getSafetyScoresPath()));
         osmReaderConfig.setSurfaceQualityPath(ghConfig.getString("weights.surface_quality", osmReaderConfig.getSurfaceQualityPath()));
-
+        osmReaderConfig.setAccidentPath(ghConfig.getString("weights.accidents", osmReaderConfig.getAccidentPath()));
 
         // index
         preciseIndexResolution = ghConfig.getInt("index.high_resolution", preciseIndexResolution);

@@ -60,6 +60,8 @@ public class DefaultEncodedValueFactory implements EncodedValueFactory {
             enc = SurfaceQuality.create();
         } else if (Lit.KEY.equals(name)) {
             enc = Lit.create();
+        } else if (Accident.KEY.equals(name)) {
+            enc = Accident.create();
         }else if (Surface.KEY.equals(name)) {
             enc = new EnumEncodedValue<>(Surface.KEY, Surface.class);
         } else if (Smoothness.KEY.equals(name)) {
