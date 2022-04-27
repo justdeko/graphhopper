@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
+/**
+ * Utility class for reading .csv input files and finding corresponding scores/values within them.
+ */
 public class SimRaImportUtil {
     private final File scoresFile;
     private static final Logger LOGGER = LoggerFactory.getLogger(SimRaImportUtil.class);

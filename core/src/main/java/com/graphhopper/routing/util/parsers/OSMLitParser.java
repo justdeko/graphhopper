@@ -9,6 +9,9 @@ import com.graphhopper.storage.IntsRef;
 
 import java.util.List;
 
+/**
+ * OSM lit tag parser for lit booleans
+ */
 public class OSMLitParser implements TagParser {
 
     private final BooleanEncodedValue litEnc;
@@ -25,6 +28,7 @@ public class OSMLitParser implements TagParser {
     @Override
     public IntsRef handleWayTags(IntsRef edgeFlags, ReaderWay way, IntsRef relationFlags) {
         String lit = way.getTag(Lit.KEY, "no");
+        // a way is considered lit if lighting is not unavailable or disused
         boolean litBool = !(lit.equals("no") || lit.equals("disused"));
         litEnc.setBool(false, edgeFlags, litBool);
         return edgeFlags;

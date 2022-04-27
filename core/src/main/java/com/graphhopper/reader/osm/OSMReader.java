@@ -280,7 +280,7 @@ public class OSMReader {
         // this section adds SimRa surface quality scores to corresponding OSM ways
         double surfaceQualityScore = surfaceQualityScoreImportUtil.findScore(way.getId(), 1.0);
         way.setTag(SurfaceQuality.KEY, surfaceQualityScore);
-
+        // this section adds accident occurrence booleans to corresponding OSM ways
         boolean accidentHappened = accidentImportUtil.findBoolean(way.getId());
         way.setTag(Accident.KEY, accidentHappened);
     }

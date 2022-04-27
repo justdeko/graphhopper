@@ -6,6 +6,9 @@ import com.graphhopper.storage.IntsRef;
 
 import java.util.List;
 
+/**
+ * Accident boolean parser for accident values
+ */
 public class AccidentParser implements TagParser {
 
     private final BooleanEncodedValue accidentEnc;
