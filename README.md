@@ -31,7 +31,8 @@ This applies to the following files:
 - `Dockerfile`
 - `graphhopper.sh`
 - `.github/build-and-upload.sh`
-  The relevant attribution (MIT License) is included within these files.
+
+The relevant attribution (MIT License) is included within these files.
 
 ## Related projects for SimRa-Nav:
 
