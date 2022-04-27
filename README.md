@@ -25,7 +25,7 @@ and [specific developer quickstart instructions](docs/core/quickstart-from-sourc
 
 ## Additional tools used
 
-We use a set of build and publish mechanisms from [israelhikingmap]() to make a custom docker image of the engine.
+We use a set of build and publish mechanisms from [israelhikingmap](https://github.com/IsraelHikingMap/graphhopper-docker-image-push) to make a custom docker image of the engine.
 This applies to the following files:
 
 - `Dockerfile`
